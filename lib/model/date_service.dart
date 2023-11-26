@@ -46,3 +46,22 @@ Future<List<Date>> getDates() async {
     throw Exception('Failed to load tasks');
   }
 }
+
+// get dates by start date
+Future<List<Date>> getDateByStartDate(DateTime startDate) async {
+  var formattedDate = "${startDate.year}-${startDate.month}-${startDate.day}";
+  var response = await http.get(Uri.http(
+      '10.0.2.2:8081', 'api/date/by-date', {'startDate': formattedDate}));
+  if (response.statusCode == 200) {
+    var jsonData = jsonDecode(response.body);
+    List<Date> startDateList = [];
+
+    for (var eachStartDate in jsonData) {
+      final startDate = Date.fromMap(eachStartDate);
+      startDateList.add(startDate);
+    }
+    return startDateList;
+  } else {
+    throw Exception('Failed to load dates');
+  }
+}
