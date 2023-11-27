@@ -1,6 +1,6 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_flutter_spring_app/model/date_service.dart';
+import 'package:todo_flutter_spring_app/widgets/list_view_body_container_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,47 +51,19 @@ class _HomePageState extends State<HomePage> {
             ),
 
             // body container
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: FutureBuilder(
-                  future: getDateByStartDate(selectedDate),
-                  builder: (context, AsyncSnapshot<List<Date>> snapshot) {
-                    // Check for errors
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Error: ${snapshot.error}'),
-                      );
-                    }
-
-                    // Show a loading indicator while the dates are loading
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    // Display the dates if available
-                    return Column(
-                      children: snapshot.data!.map((date) {
-                        return ListTile(
-                          //leading: Text(date.startDate),
-                          title: Text(date.task.title),
-                          subtitle: Text(date.task.description),
-                          trailing: Text(date.task.status),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
-              ),
-            ),
+            ListViewBodyContainer(selectedDate: selectedDate),
           ],
         ),
       ),
     );
   }
 }
+
+
+
+
+ 
+
 
 /*
   body: FutureBuilder(
